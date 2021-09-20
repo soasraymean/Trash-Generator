@@ -63,7 +63,6 @@ public class App {
                     break;
                 case 5:
                     addGigaListInDb();
-                    System.out.println("Added into Database\n\n");
                     break;
                 case 6:
                     System.out.println("The Sum of Ints: " + getSumOfIntsFromDb() + "\n\n");
@@ -87,11 +86,11 @@ public class App {
     //Method that prints all options
     private static void showOptions() {
         System.out.println("Choose the action: \n");
-        System.out.println("1 \t-\t Generate " + INITIAL_FILE_QUANTITY + " files (Local Storage) with " +
+        System.out.println("1 \t-\t Generate (existing records will be deleted) " + INITIAL_FILE_QUANTITY + " files (Local Storage) with " +
                 INITIAL_STRING_QUANTITY + " records");
         System.out.println("2 \t-\t Get Records from Database");
         System.out.println("3 \t-\t Clear Table");
-        System.out.println("4 \t-\t Create " + INITIAL_FILE_QUANTITY + " files with " + INITIAL_STRING_QUANTITY +
+        System.out.println("4 \t-\t Create (existing files will be deleted)" + INITIAL_FILE_QUANTITY + " files with " + INITIAL_STRING_QUANTITY +
                 " records + General File with name: " + GIGA_FILE_NAME + "; Output Directory Name: " + OUTPUT_DIRECTORY_NAME);
         System.out.println("5 \t-\t Import all records into Database (from Local Storage)");
         System.out.println("6 \t-\t Get the Sum of Ints from Database");
@@ -215,6 +214,10 @@ public class App {
 
     //Method that inserts records from local storage into database
     private static void addGigaListInDb() {
+        if (GIGA_LIST.size() == 0) {
+            System.out.println("Nothing to insert\n\n");
+            return;
+        }
         PreparedStatement statement = null;
         try {
             statement = CONNECTION
@@ -232,6 +235,7 @@ public class App {
                     showProgress(++progress);
                 }
             }
+            System.out.println("Added into Database\n\n");
         } catch (SQLException exception) {
             exception.printStackTrace();
         } finally {
@@ -388,6 +392,7 @@ public class App {
 
     //Method that generates all records and saves them in local storage
     private static void generateGigaList() {
+        GIGA_LIST.clear();
         for (int i = 0; i < INITIAL_FILE_QUANTITY; i++) {
             List<Entity> tmpList = new ArrayList<>();
             for (int j = 0; j < INITIAL_STRING_QUANTITY; j++) {
@@ -410,9 +415,13 @@ public class App {
 
     //Method that prints local storage records
     private static void printGigaList() {
-        for (int i = 0; i < INITIAL_FILE_QUANTITY; i++) {
-            for (Entity entity : GIGA_LIST.get(i)) {
-                System.out.println(entity.toString());
+        if(GIGA_LIST.size()==0){
+            System.out.println("Local Storage is empty\n\n");
+        }else {
+            for (int i = 0; i < INITIAL_FILE_QUANTITY; i++) {
+                for (Entity entity : GIGA_LIST.get(i)) {
+                    System.out.println(entity.toString());
+                }
             }
         }
     }
