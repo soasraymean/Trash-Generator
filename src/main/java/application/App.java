@@ -324,6 +324,8 @@ public class App {
                 }
             }
         }
+        generateFiles();
+        generateGigaFile();
     }
 
     //Method that creates the File with all the records from small files
