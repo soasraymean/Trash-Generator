@@ -1,4 +1,4 @@
-# Unstoppable-trash-generation
+# Trash-Generator
 
 Code name: "Garbage Generator"
 
